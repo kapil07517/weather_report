@@ -1,0 +1,9 @@
+<div class="widget request-forecast">
+  <%= form_for :forecast, url: forecast_create_path, html: {class: "form-inline"}, method: 'GET' do |f| %>
+      <div class="form-group">  
+        <%= f.label :location, "Location" %>
+        <%= f.text_field :location, :class => 'typeahead' %>
+        <%= f.submit 'Go', :class => 'btn btn-default submit-forecast' %>
+      </div>
+    <% end %>
+  </div>

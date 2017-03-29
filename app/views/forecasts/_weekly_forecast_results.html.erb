@@ -1,0 +1,54 @@
+<% @temps = [] %>
+<% @dates = [] %>
+<h3>Weekly weather report</h3>
+<table class="table table-responsive">
+  <tr>    
+    <th>Min-Temp</th>
+    <th>Min-Temp Time</th>
+    <th>Max-Temp</th>
+    <th>Max-Temp Time</th>
+    <th>Date</th>    
+  </tr>
+  <% forecast.daily.each do |day_forecast| %>
+    <% @temps << day_forecast.temperatureMax %>
+    <% @dates << DateTime.strptime(day_forecast.time.to_s, "%s").strftime("%d-%m-%Y") %>
+    <tr>
+      <td><%= day_forecast.temperatureMin %></td>
+      <td><%= DateTime.strptime(day_forecast.temperatureMinTime.to_s, "%s").strftime("%I:%M %p") %></td>
+      <td><%= day_forecast.temperatureMax %></td>
+      <td><%= DateTime.strptime(day_forecast.temperatureMaxTime.to_s, "%s").strftime("%I:%M %p") %></td>
+      <td><%= DateTime.strptime(day_forecast.time.to_s, "%s").strftime("%d-%m-%Y") %></td>
+    </tr>
+  <% end %>
+</table>
+
+<div id="wether_report"></div>
+
+<script>
+  Highcharts.chart('wether_report', {
+    title: {
+      text: 'Weather report'
+    },
+    subtitle: {
+      text: 'Source: openweather.com'
+    },
+    yAxis: {
+      title: {
+        text: 'Temperature'
+      }
+    },
+    xAxis: {
+      categories: <%= raw @dates %>
+    },
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle'
+    },
+    series: [{
+        name: 'Day',
+        data: <%= @temps %>
+      }]
+
+  });
+</script>
